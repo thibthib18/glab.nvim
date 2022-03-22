@@ -9,7 +9,7 @@ Requirements
 
 
 Roadmap:
-- [ ] Telescope for MRs
+- [x] Telescope for MRs
 - [ ] Display buffer/tab for MR overview (title, description, etc..)
 - [ ] Open MR diff via data from MR and diffview.nvim
 - [ ] View comments/discussion on diffview

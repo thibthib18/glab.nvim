@@ -19,6 +19,28 @@ function M.get_pages(text)
     return responses
 end
 
+function M.tbl_slice(tbl, first, last, step)
+    local sliced = {}
+    for i = first or 1, last or #tbl, step or 1 do
+        sliced[#sliced + 1] = tbl[i]
+    end
+    return sliced
+end
+
+function M.get_nested_prop(obj, prop)
+    while true do
+        local parts = vim.split(prop, "%.")
+        if #parts == 1 then
+            break
+        else
+            local part = parts[1]
+            local remaining = table.concat(M.tbl_slice(parts, 2, #parts), ".")
+            return M.get_nested_prop(obj[part], remaining)
+        end
+    end
+    return obj[prop]
+end
+
 function M.aggregate_pages(text, aggregation_key)
     -- aggregation key can be at any level (eg: comments)
     -- take the first response and extend it with elements from the

@@ -23,7 +23,8 @@ function M.get_merge_requests(owner, name, on_result)
     local filter = "state: opened"
     local query = graphql("merge_requests_query", owner, name, filter)
     local on_result_cb = function(output)
-        local resp = vim.fn.json_decode(output)
+        local resp = utils.aggregate_pages(output, "data.project.mergeRequests.nodes")
+        -- local resp = vim.fn.json_decode(output)
         local obj = resp.data.project.mergeRequests.nodes
         on_result(obj)
     end
@@ -34,7 +35,8 @@ function M.get_merge_request(owner, name, number, on_result)
     local query = graphql("merge_request_query", owner, name, number)
     local on_result_cb = function(output)
         local resp = utils.aggregate_pages(output, string.format("data.project.%s.discussions.nodes", "mergeRequest"))
-        local obj = resp.data.project.mergeRequest.nodes
+        print(vim.inspect(resp))
+        local obj = resp.data.project.mergeRequest
         on_result(obj)
     end
     run_job(query, on_result_cb)

@@ -1,7 +1,12 @@
 local M = {}
 
 M.config = {
-    provider_hostname = ""
+    provider_hostname = "",
+    username = "thibthib",
+    project = {
+        owner = "thibthib",
+        name = "test-project"
+    }
 }
 
 function M.get_config()
