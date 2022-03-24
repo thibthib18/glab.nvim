@@ -40,6 +40,8 @@ query($endCursor: String) {
       description
       createdAt
       updatedAt
+      sourceBranch
+      targetBranch
       discussions(first: 100, after: $endCursor) {
         pageInfo {
           hasNextPage
