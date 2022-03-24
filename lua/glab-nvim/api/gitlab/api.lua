@@ -35,7 +35,6 @@ function M.get_merge_request(owner, name, number, on_result)
     local query = graphql("merge_request_query", owner, name, number)
     local on_result_cb = function(output)
         local resp = utils.aggregate_pages(output, string.format("data.project.%s.discussions.nodes", "mergeRequest"))
-        print(vim.inspect(resp))
         local obj = resp.data.project.mergeRequest
         on_result(obj)
     end
