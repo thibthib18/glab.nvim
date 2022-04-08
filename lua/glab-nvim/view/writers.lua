@@ -273,11 +273,12 @@ function M.write_mr_details(bufnr, mr, update)
 
     local line = 3
     -- write #details + empty lines
-    local empty_lines = {}
-    for _ = 1, #details + 1 do
-        table.insert(empty_lines, "")
-    end
+    -- because virt_text needs empty lines?
     if not update then
+        local empty_lines = {}
+        for _ = 1, #details + 1 do
+            table.insert(empty_lines, "")
+        end
         M.write_block(bufnr, empty_lines, line)
     end
 
