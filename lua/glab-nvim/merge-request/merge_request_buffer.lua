@@ -20,7 +20,6 @@ end
 function M.render(bufnr, merge_request)
     render.mr_view(bufnr, merge_request)
     vim.api.nvim_set_current_buf(bufnr)
-    vim.api.nvim_buf_set_option(bufnr, "syntax", "lua")
     vim.api.nvim_buf_set_option(bufnr, "buftype", "acwrite")
     vim.api.nvim_buf_set_option(bufnr, "swapfile", false)
     vim.api.nvim_buf_set_option(bufnr, "modified", false)
