@@ -52,8 +52,10 @@ query($endCursor: String) {
           resolved
           notes {
             nodes {
+              createdAt
               author {
                 name
+                username
               }
               body
               system
@@ -63,6 +65,9 @@ query($endCursor: String) {
                 newLine
                 oldLine
                 filePath
+              }
+              userPermissions {
+                createNote
               }
             }
           }
