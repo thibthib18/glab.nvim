@@ -12,6 +12,13 @@ octo_buffers = {}
 local M = {}
 
 function M.write_virtual_text(bufnr, ns, line, chunks, mode)
+    if vim.api.nvim_buf_line_count(bufnr) - 1 < line then
+        print(
+            "Error! Trying to write VT at: " .. line .. "; while lines count is: " .. vim.api.nvim_buf_line_count(bufnr)
+        )
+        print("The following virtual text will not be added:")
+        print(vim.inspect(chunks))
+    end
     mode = mode or "extmark"
     local ok
     if mode == "extmark" then
