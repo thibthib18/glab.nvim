@@ -30,7 +30,7 @@ function M.open_diff()
     local bufnr = vim.api.nvim_get_current_buf()
     local mr_buffer = glab_nvim_buffers[bufnr]
     local merge_request = mr_buffer.merge_request
-    vim.cmd("DiffviewOpen " .. merge_request.sourceBranch .. ".." .. merge_request.targetBranch)
+    vim.cmd("DiffviewOpen " .. "origin/" .. merge_request.sourceBranch .. ".." .. merge_request.targetBranch)
 end
 
 return M
