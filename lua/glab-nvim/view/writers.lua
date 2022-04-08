@@ -337,4 +337,121 @@ function M.write_state(bufnr, state, number)
     vim.api.nvim_buf_set_virtual_text(bufnr, constants.OCTO_TITLE_VT_NS, 0, title_vt, {})
 end
 
+-- M.write_discussions(bufnr, merge_request.discussions.nodes)
+function M.write_user_note(bufnr, note, line)
+    local start_line = line
+    -- header: author and date
+    local header_vt = {
+        {note.author.name .. " ", "OctoDetailsLabel"},
+        {note.author.username .. " ", "OctoUser"},
+        {" " .. utils.format_date(note.createdAt), "OctoDate"}
+    }
+    -- local author_bubble = bubbles.make_user_bubble(note.author.name, false) -- is_viewer=false, only affects highlight
+    -- vim.list_extend(author_vt, author_bubble)
+    local comment_vt_ns = vim.api.nvim_create_namespace("")
+    M.write_block(bufnr, {""}, line)
+    M.write_virtual_text(bufnr, comment_vt_ns, line - 1, header_vt)
+    M.write_block(bufnr, {""}, line + 1)
+    line = line + 2
+    -- body
+    local note_body = vim.fn.trim(string.gsub(note.body, "\r\n", "\n"))
+    if vim.startswith(note_body, constants.NO_BODY_MSG) or utils.is_blank(note_body) then
+        note_body = " "
+    end
+    local content = vim.split(note_body, "\n", true)
+    vim.list_extend(content, {""})
+    local comment_mark = M.write_block(bufnr, content, line, true)
+    line = line + #content
+
+    -- Note: here missing the comment metadata part used in octo
+
+    return start_line, line
+end
+
+function M.write_system_note(bufnr, note, line, extended)
+    local start_line = line
+    local icon_names = {}
+    icon_names["user"] = "🧑"
+    icon_names["commit"] = ""
+    icon_names["pencil-square"] = "✏️"
+    icon_names["fork"] = "🇾"
+    icon_names["comment"] = "📝"
+    icon_names["git-merge"] = "↗️"
+    icon_names["approval"] = "✅"
+
+    -- extract and clean body
+    local note_body = vim.fn.trim(string.gsub(note.body, "\r\n", "\n"))
+    if vim.startswith(note_body, constants.NO_BODY_MSG) or utils.is_blank(note_body) then
+        note_body = " "
+    end
+    local content = vim.split(note_body, "\n", true)
+    vim.list_extend(content, {""})
+
+    -- create note header virtual text
+    local note_vt = {
+        {" " .. icon_names[note.systemNoteIconName] .. " ", "OctoUser"},
+        {" " .. note.author.name, "OctoUser"},
+        {" " .. content[1], "OctoUser"}
+    }
+    table.remove(content, 1) -- remove first as already used
+    local comment_vt_ns = vim.api.nvim_create_namespace("")
+    M.write_block(bufnr, {""}, line)
+    M.write_virtual_text(bufnr, comment_vt_ns, line - 1, note_vt)
+    M.write_block(bufnr, {""}, line + 1)
+
+    line = line + 1
+
+    -- rest of body if needed
+    if extended then
+        for _, value in ipairs(content) do
+            M.write_block(bufnr, {""}, line)
+            M.write_virtual_text(bufnr, comment_vt_ns, line - 1, {{value, "OctoUser"}})
+            line = line + 1
+        end
+    end
+
+    return start_line, line
+end
+
+function M.write_discussion(bufnr, line, discussion)
+    local start_line = line
+    local is_system = discussion.notes.nodes[1].system
+
+    if not is_system then
+        -- NTH: insert a thread box for threads (user notes)
+        local delimiter = string.rep("_", 40) .. "Thread Start" .. string.rep("_", 40)
+        local mark = M.write_block(bufnr, delimiter, line)
+        M.write_block(bufnr, "", line + 1)
+        line = line + 2
+    else
+        M.write_block(bufnr, "", line)
+        line = line + 1
+    end
+
+    for _, note in ipairs(discussion.notes.nodes) do
+        if note.system then
+            _, line = M.write_system_note(bufnr, note, line)
+        else
+            _, line = M.write_user_note(bufnr, note, line)
+        end
+    end
+    if not is_system then
+        -- NTH: insert a thread box for threads (user notes)
+        local delimiter = string.rep("_", 40) .. "Thread End" .. string.rep("_", 40)
+        local mark = M.write_block(bufnr, delimiter, line)
+        M.write_block(bufnr, "", line + 1)
+        line = line + 2
+    end
+    return start_line, vim.api.nvim_buf_line_count(bufnr)
+end
+
+function M.write_discussions(bufnr, discussions, line)
+    M.write_block(bufnr, "", line) -- write initial additional line in case first is VT
+    local start_line = line
+    for _, discussion in ipairs(discussions) do
+        _, line = M.write_discussion(bufnr, line, discussion)
+    end
+    return start_line, line
+end
+
 return M
