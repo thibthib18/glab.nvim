@@ -9,7 +9,6 @@ function M.pick_merge_requests()
         pickers.merge_request_picker(output)
     end
     local project = config.get_config().project
-    print(vim.inspect(project))
     api.get_merge_requests(project.owner, project.name, on_result)
 end
 
