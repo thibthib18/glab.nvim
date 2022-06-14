@@ -5,7 +5,7 @@ local constants = require "octo.constants"
 local utils = require "octo.utils"
 local config = require("glab-nvim.config")
 
-require "octo.colors".setup()
+require "glab-nvim.view.colors".setup()
 
 octo_buffers = {}
 
