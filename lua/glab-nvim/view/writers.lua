@@ -1,8 +1,8 @@
-local BodyMetadata = require "octo.model.body-metadata".BodyMetadata
-local TitleMetadata = require "octo.model.title-metadata".TitleMetadata
-local bubbles = require "octo.ui.bubbles"
-local constants = require "octo.constants"
-local utils = require "octo.utils"
+local BodyMetadata = require "glab-nvim.octo.model.body-metadata".BodyMetadata
+local TitleMetadata = require "glab-nvim.octo.model.title-metadata".TitleMetadata
+local bubbles = require "glab-nvim.octo.ui.bubbles"
+local constants = require "glab-nvim.octo.constants"
+local utils = require "glab-nvim.octo.utils"
 local config = require("glab-nvim.config")
 
 require "glab-nvim.view.colors".setup()

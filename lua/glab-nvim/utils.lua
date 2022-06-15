@@ -1,4 +1,4 @@
-local date = require "octo.date"
+local date = require "glab-nvim.date"
 
 local M = {}
 
