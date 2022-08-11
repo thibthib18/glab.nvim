@@ -42,5 +42,6 @@ M.Kind = {
 
 M.get_key = function(kind)
   return M.Keys[kind]
+end
 
 return M
