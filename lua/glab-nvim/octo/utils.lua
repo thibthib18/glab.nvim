@@ -1,9 +1,9 @@
-local constants = require "octo.constants"
-local date = require "octo.date"
-local base64 = require "octo.base64"
-local gh = require "octo.gh"
-local graphql = require "octo.graphql"
-local config = require "octo.config"
+local constants = require "glab-nvim.octo.constants"
+local date = require "glab-nvim.octo.date"
+local base64 = require "glab-nvim.octo.base64"
+local gh = require "glab-nvim.octo.gh"
+local graphql = require "glab-nvim.octo.graphql"
+local config = require "glab-nvim.octo.config"
 local _, Job = pcall(require, "plenary.job")
 
 local M = {}
@@ -303,8 +303,8 @@ function M.get_current_pr()
         return
     end
 
-    local Rev = require "octo.reviews.rev".Rev
-    local PullRequest = require "octo.model.pull-request".PullRequest
+    local Rev = require "glab-nvim.octo.reviews.rev".Rev
+    local PullRequest = require "glab-nvim.octo.model.pull-request".PullRequest
     return PullRequest:new(
         {
             bufnr = bufnr,
