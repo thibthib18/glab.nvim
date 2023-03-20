@@ -375,6 +375,7 @@ function M.write_system_note(bufnr, note, line, extended)
   icon_names["user"] = "🧑"
   icon_names["commit"] = ""
   icon_names["pencil-square"] = "✏️"
+  icon_names["pencil"] = "✏️"
   icon_names["fork"] = "🇾"
   icon_names["comment"] = "📝"
   icon_names["git-merge"] = "↗️"
