@@ -1,5 +1,5 @@
-local config = require'octo.config'
-local _, Job = pcall(require,'plenary.job')
+local config = require 'glab-nvim.octo.config'
+local _, Job = pcall(require, 'plenary.job')
 
 local headers = {
   "application/vnd.github.v3+json",
@@ -25,10 +25,10 @@ local function run(opts)
 
   -- Lazy load viewer name on the first gh command
   if not vim.g.octo_viewer then
-    local job = Job:new( {
+    local job = Job:new({
       enable_recording = true,
       command = "gh",
-      args = {"auth", "status"},
+      args = { "auth", "status" },
       env = env_vars
     })
     job:sync()
@@ -46,8 +46,8 @@ local function run(opts)
   local mode = opts.mode or "async"
   if opts.args[1] == "api" then
     table.insert(opts.args, "-H")
-    table.insert(opts.args, "Accept: "..table.concat(headers, ";"))
-    if not require"glab-nvim.octo.utils".is_blank(conf.provider_hostname) then
+    table.insert(opts.args, "Accept: " .. table.concat(headers, ";"))
+    if not require "glab-nvim.octo.utils".is_blank(conf.provider_hostname) then
       table.insert(opts.args, "--hostname")
       table.insert(opts.args, conf.provider_hostname)
     end
@@ -61,7 +61,7 @@ local function run(opts)
   end
 
   local job =
-    Job:new(
+  Job:new(
     {
       enable_recording = true,
       command = "gh",
