@@ -13,7 +13,7 @@ function M.mr_preview()
     end,
     define_preview = function(self, entry)
       local bufnr = self.state.bufnr
-      local project = config.get_project().owner
+      local project = config.get_project()
       if self.state.bufname ~= entry.name or vim.api.nvim_buf_line_count(bufnr) == 1 then
         api.get_merge_request(
           project.owner,
