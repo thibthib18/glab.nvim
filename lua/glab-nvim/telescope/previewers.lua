@@ -1,5 +1,5 @@
 local previewers = require "telescope.previewers"
-local config = require("glab-nvim.config").get_config()
+local config = require("glab-nvim.config")
 
 local api = require("glab-nvim.api.gitlab.api")
 local render = require("glab-nvim.view.render")
@@ -13,10 +13,11 @@ function M.mr_preview()
     end,
     define_preview = function(self, entry)
       local bufnr = self.state.bufnr
+      local project = config.get_project().owner
       if self.state.bufname ~= entry.name or vim.api.nvim_buf_line_count(bufnr) == 1 then
         api.get_merge_request(
-          require('glab-nvim.config').get_project().owner,
-          config.project.name,
+          project.owner,
+          project.name,
           entry.merge_request.iid,
           function(merge_request)
             render.mr_preview(bufnr, merge_request)
