@@ -18,8 +18,6 @@ local function split(text, delimiter)
 end
 
 local function get_project_from_url(url)
-  local command = 'git config --get remote.origin.url'
-  local url = vim.fn.system(command)
   local isHttp = string.match(url, 'https://') ~= nil
   if isHttp then
     local chunks = split(url, '/')
