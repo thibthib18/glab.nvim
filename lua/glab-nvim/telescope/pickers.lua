@@ -8,11 +8,12 @@ local glab_previewers = require "glab-nvim.telescope.previewers"
 local entry_maker = require "glab-nvim.telescope.entry_maker"
 local merge_request_buffer = require "glab-nvim.merge-request.merge_request_buffer"
 local api = require("glab-nvim.api.gitlab.api")
-local project = require("glab-nvim.config").get_project()
+local config = require("glab-nvim.config")
 
 local M = {}
 
 function M.merge_request_picker(merge_requests)
+  local project = config.get_project()
   local picker_opts = {}
   picker_opts.preview_title = "Preview"
   picker_opts.prompt_title = ""
